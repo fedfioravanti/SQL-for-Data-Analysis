@@ -1,0 +1,149 @@
+SELECT *
+FROM accounts
+JOIN orders
+ON orders.account_id = accounts.id
+
+
+SELECT orders.standard_qty,
+orders.gloss_qty,
+orders.poster_qty,
+accounts.website,
+accounts.primary_poc
+FROM accounts
+JOIN orders
+ON orders.account_id = accounts.id
+
+
+-----
+
+
+SELECT a.primary_poc, w.occurred_at, w.channel, a.name
+FROM web_events w
+JOIN accounts a
+ON w.account_id = a.id
+WHERE a.name = 'Walmart'
+
+
+SELECT r.name region, s.name rep, a.name account
+FROM sales_reps s
+JOIN region r
+ON s.region_id = r.id
+JOIN accounts a
+ON a.sales_rep_id = s.id
+ORDER BY a.name
+
+
+SELECT r.name region, a.name account, 
+       o.total_amt_usd/(o.total + 0.01) unit_price
+FROM region r
+JOIN sales_reps s
+ON s.region_id = r.id
+JOIN accounts a
+ON a.sales_rep_id = s.id
+JOIN orders o
+ON o.account_id = a.id
+
+
+-----
+
+
+SELECT c.countryid, c.countryName, s.stateName
+FROM Country c
+JOIN State s
+ON c.countryid = s.countryid
+
+
+SELECT c.countryid, c.countryName, s.stateName
+FROM Country c
+LEFT JOIN State s
+ON c.countryid = s.countryid
+
+
+-----
+
+
+SELECT region.name RegionName, sales_reps.name SalesRepName, accounts.name AccountName
+FROM sales_reps
+JOIN region
+ON sales_reps.region_id = region.id
+JOIN accounts
+ON accounts.sales_rep_id = sales_reps.id
+WHERE region.name = 'Midwest'
+ORDER BY AccountName
+
+
+SELECT region.name RegionName, sales_reps.name SalesRepName, accounts.name AccountName
+FROM sales_reps
+JOIN region
+ON sales_reps.region_id = region.id
+JOIN accounts
+ON accounts.sales_rep_id = sales_reps.id
+WHERE region.name = 'Midwest' AND sales_reps.name LIKE 'S%'
+ORDER BY AccountName
+
+
+SELECT region.name RegionName, sales_reps.name SalesRepName, accounts.name AccountName
+FROM sales_reps
+JOIN region
+ON sales_reps.region_id = region.id
+JOIN accounts
+ON accounts.sales_rep_id = sales_reps.id
+WHERE region.name = 'Midwest' AND sales_reps.name LIKE '% K%'
+ORDER BY AccountName
+
+
+SELECT region.name RegionName, accounts.name AccountName, orders.total_amt_usd/(total+0.01) UnitPrice
+FROM sales_reps
+JOIN region
+ON sales_reps.region_id = region.id
+JOIN accounts
+ON accounts.sales_rep_id = sales_reps.id
+JOIN orders
+ON accounts.id = orders.account_id
+WHERE orders.standard_qty > 100
+
+
+SELECT region.name RegionName, accounts.name AccountName, orders.total_amt_usd/(total+0.01) UnitPrice
+FROM sales_reps
+JOIN region
+ON sales_reps.region_id = region.id
+JOIN accounts
+ON accounts.sales_rep_id = sales_reps.id
+JOIN orders
+ON accounts.id = orders.account_id
+WHERE orders.standard_qty > 100 AND orders.poster_qty > 50
+ORDER BY UnitPrice
+
+
+SELECT region.name RegionName, accounts.name AccountName, orders.total_amt_usd/(total+0.01) UnitPrice
+FROM sales_reps
+JOIN region
+ON sales_reps.region_id = region.id
+JOIN accounts
+ON accounts.sales_rep_id = sales_reps.id
+JOIN orders
+ON accounts.id = orders.account_id
+WHERE orders.standard_qty > 100 AND orders.poster_qty > 50
+ORDER BY UnitPrice DESC
+
+
+SELECT DISTINCT a.name AccountName, w.channel Channel
+FROM accounts a
+JOIN web_events w
+ON w.account_id = a.id
+WHERE a.id = 1001
+
+
+SELECT o.occurred_at OrderDate, a.name AccountName, o.total OrderTotal, o.total_amt_usd OrderAmount
+FROM accounts a
+JOIN orders o
+ON o.account_id = a.id
+WHERE o.occurred_at BETWEEN '2015-01-01' AND '2015-12-31'
+ORDER BY o.occurred_at
+
+
+
+
+
+
+
